@@ -64,7 +64,3 @@ Comprueba IPs locales, servidor, puerto, contenido de la APK y el parche de `lib
 Python 3.9+ (solo stdlib), Java 8+ para el parcheo, `apktool.jar` y `uber-apk-signer.jar`
 (no incluidos por tamaño; descárgalos de sus releases).
 
-## Aviso
-
-Proyecto para uso privado entre amigos. La app original usa contenido de Valve y es un port
-no oficial: no redistribuir ni monetizar.
