@@ -3,6 +3,17 @@
 Servidor LAN con estadísticas (MMR, héroes, historial) y sistema de parcheo de la APK
 `com.temka.dota2mobile` v1.1 para apuntarla a tu propio backend.
 
+## Descargas
+
+| Qué | Dónde |
+|---|---|
+| APK original `moba-fan-make-v1.1.apk` (518 MB) | Google Drive: https://drive.google.com/file/d/19gtSXaINFGl1WHcSkknaS_tojj2yhsbn/view |
+| Misma APK como *release asset* | https://github.com/almaguersosamax-ui/moba2/releases/tag/v1.1 |
+| Proyecto completo (servidor + parches) | Drive › carpeta **MOBA2**: https://drive.google.com/drive/folders/17skIiLofOLvKWQje5P9Sw1cYs_JAmA9x |
+
+SHA-256 de la APK: `16df8b634cb7a3e19fed8660b0cb05c263879bc2a8c921385be51b323d2a0be1`
+MD5: `87faa2df9bc3462cfaff120ca243b7f2`
+
 ## Arranque rápido
 
 ```bash
