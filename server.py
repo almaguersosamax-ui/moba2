@@ -31,7 +31,7 @@ def parse_args(argv: list[str] | None = None) -> tuple[Config, bool]:
     ap.add_argument("--udp-port", type=int, default=base.udp_port, help="puerto UDP de la partida")
     ap.add_argument("--db", default=str(base.db_path), help="ruta del fichero SQLite")
     ap.add_argument("--report-key", default=base.report_hmac_key,
-                    help="clave HMAC para validar X-Dota-Signature")
+                    help="clave HMAC para validar la firma de los reportes de partida")
     ap.add_argument("--public-url", default=base.public_base_url, help="URL pública para el panel")
     ap.add_argument("--log-level", default=base.log_level)
     ap.add_argument("--no-access-log", action="store_true")

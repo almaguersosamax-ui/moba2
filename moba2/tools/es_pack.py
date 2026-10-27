@@ -21,6 +21,7 @@ import os
 import shutil
 import zipfile
 
+from ..protocol import LOCALE_FILE_EN
 from . import metadata as meta
 
 META_MAIN = os.path.join("assets", "bin", "Data", "Managed", "Metadata", "global-metadata.dat")
@@ -28,7 +29,6 @@ NESTED = os.path.join("assets", "apkvision", "en-assets.apk")
 INNER = "assets/bin/Data/Managed/Metadata/global-metadata.dat"
 LANG_JSON = os.path.join("assets", "apkvision", "language.json")
 GAMEDATA = os.path.join("assets", "GameData", "localization")
-LOCALE_FILE = "dota_english.json"   # nombre real del fichero dentro de la APK (no se puede cambiar)
 
 
 def _load_strings(path: str) -> tuple[dict, dict]:
@@ -126,7 +126,7 @@ def export(decoded: str, out: str, limit: int = 4000) -> None:
     gd: dict[str, str] = {}
     folder = os.path.join(decoded, GAMEDATA)
     if os.path.isdir(folder):
-        with open(os.path.join(folder, LOCALE_FILE), encoding="utf-8") as fh:
+        with open(os.path.join(folder, LOCALE_FILE_EN), encoding="utf-8") as fh:
             data = json.load(fh)
         for key, value in list(data.items())[:limit]:
             if isinstance(value, str) and value.strip():

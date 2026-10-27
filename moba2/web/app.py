@@ -12,6 +12,7 @@ from urllib.parse import parse_qs, urlparse
 
 from ..config import Config
 from ..db import connection as db
+from ..protocol import SIGNATURE_HEADER, TIMESTAMP_HEADER
 from ..errors import ApiError, NotFound
 from . import dashboard
 from .api_v1 import build_router
@@ -94,7 +95,7 @@ def make_server(config: Config) -> ThreadingHTTPServer:
             if config.trace_path:
                 rec["headers"] = {k.lower(): v for k, v in self.headers.items()
                                   if k.lower() in ("authorization", "content-type", "user-agent",
-                                                   "x-dota-timestamp", "x-dota-signature")}
+                                                   SIGNATURE_HEADER.lower(), TIMESTAMP_HEADER.lower())}
                 try:
                     rec["body"] = json.loads(body.decode("utf-8")) if body else None
                 except Exception:

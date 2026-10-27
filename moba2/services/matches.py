@@ -8,6 +8,7 @@ import json
 from ..config import Config
 from ..db import connection as db
 from ..domain import elo
+from ..protocol import SIGNATURE_HEADER, TIMESTAMP_HEADER
 from ..domain.validation import clean_text
 from ..errors import ApiError
 from ..util import iso, new_token
@@ -17,11 +18,11 @@ RESULT_WIN = {"win", "w", "victory"}
 
 
 def verify_signature(config: Config, headers: dict, body: dict) -> bool:
-    """Comprueba X-Dota-Signature (v1=HMAC-SHA256 sobre 'ts.' + json compacto)."""
+    """Comprueba la firma del reporte (v1 = HMAC-SHA256 sobre 'ts.' + json compacto)."""
     if not config.report_hmac_key:
         return False
-    signature = (headers.get("x-dota-signature") or "").strip()
-    timestamp = (headers.get("x-dota-timestamp") or "").strip()
+    signature = (headers.get(SIGNATURE_HEADER.lower()) or "").strip()
+    timestamp = (headers.get(TIMESTAMP_HEADER.lower()) or "").strip()
     if not signature.startswith("v1=") or not timestamp:
         return False
     payload = f"{timestamp}.".encode() + json.dumps(body, separators=(",", ":")).encode()
