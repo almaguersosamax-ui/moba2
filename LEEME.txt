@@ -1,11 +1,11 @@
-dota2m-lan — servidor propio + parches para Dota 2 Mobile
+moba2-lan — servidor propio + parches para MOBA2
 =========================================================
 
 QUE HAY EN ESTE ZIP
   server.py            servidor (API /v1/* + panel de estadisticas), sin dependencias
-  dota2m/              codigo modular: config, db+migraciones, dominio (ELO), servicios, web
+  moba2/              codigo modular: config, db+migraciones, dominio (ELO), servicios, web
   tests/               13 pruebas automaticas:  python3 -m unittest discover -s tests -v
-  patch_dota2m.py      sistema de parcheo de la APK (IP configurable, re-aplicable)
+  patch_moba2.py      sistema de parcheo de la APK (IP configurable, re-aplicable)
   seed_demo.py         datos de ejemplo para ver el panel con partidas
   vendor/              apktool.jar y uber-apk-signer.jar (los usa el parcheador)
   docs/                informe tecnico del decompilado + plan del servidor
@@ -16,7 +16,7 @@ ARRANQUE RAPIDO
      Panel:         http://192.168.1.105:8080/
      (opcional)     python3 seed_demo.py --url http://127.0.0.1:8080
   2) Parche de la APK (sobre la APK ORIGINAL, sin parchear):
-     python3 patch_dota2m.py --apk Dota-2-Mobile-v1.1-APKVISION.apk --ip 192.168.1.105
+     python3 patch_moba2.py --apk Dota-2-Mobile-v1.1-APKVISION.apk --ip 192.168.1.105
      -> dist/dota2mobile-patched-192_168_1_105-p8080.apk
   3) Instalar:
      adb uninstall com.temka.dota2mobile

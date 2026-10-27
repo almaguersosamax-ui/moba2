@@ -17,11 +17,11 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from dota2m.config import Config                      # noqa: E402
-from dota2m.db import connection as db                # noqa: E402
-from dota2m.db import migrations                      # noqa: E402
-from dota2m.domain import elo                         # noqa: E402
-from dota2m.web.app import make_server                # noqa: E402
+from moba2.config import Config                      # noqa: E402
+from moba2.db import connection as db                # noqa: E402
+from moba2.db import migrations                      # noqa: E402
+from moba2.domain import elo                         # noqa: E402
+from moba2.web.app import make_server                # noqa: E402
 
 
 class ServerCase(unittest.TestCase):

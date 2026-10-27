@@ -5,11 +5,11 @@ Dos capas:
 1. `gamedata`  -> claves de `assets/GameData/localization/*_english.json` (UI, ítems, habilidades).
    Se sustituye el VALOR de la clave; el cliente carga esos ficheros para cualquier locale ≠ ru.
 2. `metadata`  -> literales de `global-metadata.dat` dentro de `assets/apkvision/en-assets.apk`.
-   Aquí sí pueden crecer los textos (ver dota2m/tools/metadata.py).
+   Aquí sí pueden crecer los textos (ver moba2/tools/metadata.py).
 
 Uso:
-    python3 -m dota2m.tools.es_pack export --decoded build/decoded --out lang/es_template.json
-    python3 -m dota2m.tools.es_pack apply  --decoded build/decoded --strings lang/es.json
+    python3 -m moba2.tools.es_pack export --decoded build/decoded --out lang/es_template.json
+    python3 -m moba2.tools.es_pack apply  --decoded build/decoded --strings lang/es.json
 """
 from __future__ import annotations
 
@@ -149,7 +149,7 @@ def export(decoded: str, out: str, limit: int = 4000) -> None:
 
 
 def main() -> None:
-    ap = argparse.ArgumentParser(description="Paquete de idioma para Dota 2 Mobile")
+    ap = argparse.ArgumentParser(description="Paquete de idioma para MOBA2")
     sub = ap.add_subparsers(dest="cmd", required=True)
     e = sub.add_parser("export")
     e.add_argument("--decoded", required=True)

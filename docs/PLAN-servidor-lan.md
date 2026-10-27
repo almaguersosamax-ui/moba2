@@ -1,4 +1,4 @@
-# Servidor propio LAN + estadísticas para «Dota 2 Mobile»
+# Servidor propio LAN + estadísticas para «MOBA2»
 
 Sí se puede, y es más fácil de lo que parece: **el servidor de partida ya está dentro del teléfono**.
 Este documento es el resultado del análisis estático de la APK v1.1 (`com.temka.dota2mobile`) y el plan
@@ -12,7 +12,7 @@ para levantar tu propio backend con amigos y estadísticas.
 |---|---|---|
 | Servidor de partida en el cliente | `Dota.Gameplay.MatchServer`, `MatchHost`, `MatchSetup`, `MatchConfig` | El **teléfono que hospeda simula la partida**. No hay servidor de juego dedicado que emular. |
 | Transporte | `LiteNetPipe` sobre **LiteNetLib** (UDP), `INetPipe`, `LoopbackNet` | Tráfico UDP directo entre dispositivos. |
-| Parámetros fijos | `NetConfig`: `Protocol = 6`, `DefaultPort = 27015`, `ConnectionKey = "dota2m"`, `Mtu = 1164`, `MaxMembers = 16`, `DisconnectTimeoutMs = 15000` | Puerto y handshake conocidos: **27015/udp**. |
+| Parámetros fijos | `NetConfig`: `Protocol = 6`, `DefaultPort = 27015`, `ConnectionKey = "moba2"`, `Mtu = 1164`, `MaxMembers = 16`, `DisconnectTimeoutMs = 15000` | Puerto y handshake conocidos: **27015/udp**. |
 | Salas | `LobbyState` (`HostMember`, `Difficulty`, `Code`, `Members`), `LobbyMember` (`Member`, `Name`, `Slot`, `Ready`, `Connected`), `LobbyCodec`, `LobbyCmdKind` (`SetSlot`, `SetReady`, `SetDifficulty`, `Start`) | La sala es un código de 6 caracteres + estado de slots. |
 | Integridad | `NetHandshake`, `NetGuard` (`ValidCommand`, `ValidRules`, `CleanName`, `SameSecret`), `AntiCheat`/`AntiCheatConfig` | Validación de comandos y anti-cheat del lado del host. |
 | Servicio online | `OnlineService` → `POST /v1/play`, `/v1/lobbies/join` devuelven `PlayResp { host, port, ticket, sessionKey, expiresAt, lobby, rejoin }` | **El backend solo sirve para descubrir el host y emitir el ticket.** El juego en sí no pasa por ahí. |
@@ -73,7 +73,7 @@ adb shell am start -n com.temka.dota2mobile/org.apkvision.dota2mobile.LauncherAc
   --es unity "-dota.net.host 192.168.1.50 -dota.net.name Amigo"
 adb logcat | grep -iE "dota|net|apkvision"
 ```
-Si el handshake UDP (`ConnectionKey "dota2m"`, protocolo 6) se completa, **ya tienes LAN con amigos sin tocar nada más**.
+Si el handshake UDP (`ConnectionKey "moba2"`, protocolo 6) se completa, **ya tienes LAN con amigos sin tocar nada más**.
 
 **Fase 1 — servidor de salas + estadísticas (incluido en este paquete).**
 `server.py` implementa toda la tabla del punto 2, con SQLite y panel web. Los teléfonos apuntan a `http://TU-IP:8080`.
@@ -107,7 +107,7 @@ El panel ya muestra clasificación, winrate por héroe, K/D/A medio y últimas p
 | `README.md` | Arranque rápido y pruebas |
 
 ```bash
-python3 server.py --host-ip 192.168.1.50 --port 8080 --udp-port 27015 --db dota2m.db
+python3 server.py --host-ip 192.168.1.50 --port 8080 --udp-port 27015 --db moba2.db
 # API:      http://192.168.1.50:8080
 # Panel:    http://192.168.1.50:8080/
 # Partida:  192.168.1.50:27015/udp  (el host sigue siendo el teléfono que crea la sala)

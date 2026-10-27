@@ -1,4 +1,4 @@
-"""Migraciones versionadas a partir de los .sql de dota2m/db/schema."""
+"""Migraciones versionadas a partir de los .sql de moba2/db/schema."""
 from __future__ import annotations
 
 from pathlib import Path

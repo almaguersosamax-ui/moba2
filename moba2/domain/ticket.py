@@ -1,4 +1,4 @@
-"""Ticket de conexión (ConnectTicket v2) del cliente Dota 2 Mobile.
+"""Ticket de conexión (ConnectTicket v2) del cliente MOBA2.
 
 Estructura recuperada por desensamblado de `Dota.Gameplay.ConnectTicket` en
 libil2cpp.so (métodos Create / TryOpen / NewAes):
@@ -60,11 +60,11 @@ class TicketInfo:
 
 
 def _mac_key(master: bytes) -> bytes:
-    return hashlib.sha256(b"dota2m-ticket-mac|" + master).digest()
+    return hashlib.sha256(b"moba2-ticket-mac|" + master).digest()
 
 
 def _aes_key(master: bytes) -> bytes:
-    return hashlib.sha256(b"dota2m-ticket-aes|" + master).digest()
+    return hashlib.sha256(b"moba2-ticket-aes|" + master).digest()
 
 
 def _aes_encrypt(key: bytes, iv: bytes, data: bytes) -> bytes:
@@ -154,4 +154,4 @@ def _iv(master: bytes, header_clear: bytes) -> bytes:
     El cliente no transmite el IV: se deriva de datos que el anfitrión ya tiene antes
     de descifrar, así el descifrado es determinista y no hay bytes extra.
     """
-    return hashlib.sha256(b"dota2m-ticket-iv|" + master + header_clear).digest()[:16]
+    return hashlib.sha256(b"moba2-ticket-iv|" + master + header_clear).digest()[:16]

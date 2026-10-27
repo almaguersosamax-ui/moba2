@@ -17,7 +17,7 @@ from . import dashboard
 from .api_v1 import build_router
 from .router import Request, Router
 
-log = logging.getLogger("dota2m.http")
+log = logging.getLogger("moba2.http")
 MAX_BODY = 2 * 1024 * 1024
 
 
@@ -79,7 +79,7 @@ def make_server(config: Config) -> ThreadingHTTPServer:
     router = build(config)
 
     class Handler(BaseHTTPRequestHandler):
-        server_version = "dota2m/1.0"
+        server_version = "moba2/1.0"
         protocol_version = "HTTP/1.1"
 
         def _dispatch(self) -> None:

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Punto de entrada del servidor LAN + estadísticas de Dota 2 Mobile.
+"""Punto de entrada del servidor LAN + estadísticas de MOBA2.
 
 Ejemplos:
     python3 server.py --host-ip 192.168.1.105                     # API y panel en :8080
@@ -15,15 +15,15 @@ import sys
 from dataclasses import replace
 from pathlib import Path
 
-from dota2m.config import Config
-from dota2m.db import connection as db
-from dota2m.db import migrations
-from dota2m.web.app import serve
+from moba2.config import Config
+from moba2.db import connection as db
+from moba2.db import migrations
+from moba2.web.app import serve
 
 
 def parse_args(argv: list[str] | None = None) -> tuple[Config, bool]:
     base = Config.from_env()
-    ap = argparse.ArgumentParser(description="Servidor LAN + estadísticas para Dota 2 Mobile")
+    ap = argparse.ArgumentParser(description="Servidor LAN + estadísticas para MOBA2")
     ap.add_argument("--bind", default=base.bind, help="interfaz de escucha (0.0.0.0)")
     ap.add_argument("--port", type=int, default=base.http_port, help="puerto HTTP")
     ap.add_argument("--host-ip", default=base.host_ip,
@@ -58,7 +58,7 @@ def main(argv: list[str] | None = None) -> int:
     applied = migrations.migrate()
     version = migrations.current_version()
     if applied:
-        logging.getLogger("dota2m.db").info("migraciones aplicadas: %s (versión %d)",
+        logging.getLogger("moba2.db").info("migraciones aplicadas: %s (versión %d)",
                                             applied, version)
     if migrate_only:
         print(f"esquema en versión {version} · {cfg.db_path}")

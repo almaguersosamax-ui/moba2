@@ -2,7 +2,7 @@
   "_meta": {
     "language": "es",
     "cobertura": "interfaz (HUD, tienda, objetos, mensajes de sistema). Los tooltips de héroes/habilidades y las descripciones largas siguen en inglés.",
-    "como_ampliar": "python3 -m dota2m.tools.es_pack export --decoded build/decoded --out lang/es.json  (añade las claves que falten y vuelve a aplicar)",
+    "como_ampliar": "python3 -m moba2.tools.es_pack export --decoded build/decoded --out lang/es.json  (añade las claves que falten y vuelve a aplicar)",
     "nota": "El cliente usa el overlay de APKVISION para cualquier idioma que no sea ruso; por eso el español se aplica sobre el overlay inglés."
   },
   "metadata": {

@@ -19,7 +19,7 @@ class Config:
     udp_port: int = 27015           # puerto UDP real de la partida (NetConfig.DefaultPort)
     public_base_url: str = ""       # p.ej. http://192.168.1.105:8080 (para el panel)
     # datos
-    db_path: Path = field(default_factory=lambda: Path("data/dota2m.db"))
+    db_path: Path = field(default_factory=lambda: Path("data/moba2.db"))
     # seguridad
     report_hmac_key: str = ""
     token_ttl_days: int = 30

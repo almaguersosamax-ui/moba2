@@ -1,4 +1,4 @@
-# Informe de análisis — «Dota 2 Mobile» v1.1 (APKVISION)
+# Informe de análisis — «MOBA2» v1.1 (APKVISION)
 
 Análisis estático de la APK descargada de `dl.apkvision.org`. Fecha del análisis: 26 de octubre de 2026.
 Todo el trabajo se hizo **sin ejecutar la app**: descarga, desempaquetado, decompilado Java (jadx),
@@ -28,7 +28,7 @@ decodificado de recursos (apktool) y volcado del código C# (Il2CppDumper).
 | SHA-256 | `16df8b634cb7a3e19fed8660b0cb05c263879bc2a8c921385be51b323d2a0be1` |
 | MD5 | `87faa2df9bc3462cfaff120ca243b7f2` |
 | Package | `com.temka.dota2mobile` |
-| Nombre visible | Dota 2 Mobile |
+| Nombre visible | MOBA2 |
 | versionName / versionCode | 1.1 / 2 |
 | minSdk / targetSdk / compileSdk | 28 (Android 9) / 36 / 36 |
 | ABI | `arm64-v8a` únicamente |

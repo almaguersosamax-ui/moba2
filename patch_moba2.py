@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Sistema de parcheo de "Dota 2 Mobile" (com.temka.dota2mobile) para apuntar el juego
+Sistema de parcheo de "MOBA2" (com.temka.dota2mobile) para apuntar el juego
 a un servidor propio (LAN por defecto: http://192.168.1.105:8080).
 
 Qué hace:
@@ -16,9 +16,9 @@ Qué hace:
   5. Verifica el resultado leyendo la APK final.
 
 Uso (re-ejecutable cada vez que cambie la IP del servidor, siempre sobre la APK ORIGINAL):
-    python3 patch_dota2m.py --apk Dota-2-Mobile-v1.1-APKVISION.apk --ip 192.168.1.105
-    python3 patch_dota2m.py --apk ... --ip 192.168.1.105 --port 8080 --out dist/
-    python3 patch_dota2m.py --apk ... --ip 192.168.1.105 --port 0        # servidor en :80
+    python3 patch_moba2.py --apk Dota-2-Mobile-v1.1-APKVISION.apk --ip 192.168.1.105
+    python3 patch_moba2.py --apk ... --ip 192.168.1.105 --port 8080 --out dist/
+    python3 patch_moba2.py --apk ... --ip 192.168.1.105 --port 0        # servidor en :80
 """
 
 import argparse
@@ -35,7 +35,7 @@ import zipfile
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 try:
-    from dota2m.tools import metadata as _metadata      # reescritor que permite URLs largas
+    from moba2.tools import metadata as _metadata      # reescritor que permite URLs largas
 except Exception:                                        # pragma: no cover
     _metadata = None
 
@@ -140,7 +140,7 @@ def literal_indices(blob, needle: bytes) -> list[int]:
 def patch_literal_table(blob, new_url):
     """Sustituye el literal del servidor por una URL MÁS LARGA (crece el blob de literales)."""
     if _metadata is None:
-        raise RuntimeError("falta dota2m/tools/metadata.py para URLs largas")
+        raise RuntimeError("falta moba2/tools/metadata.py para URLs largas")
     indices = literal_indices(blob, ORIGINAL_URL)
     if not indices:
         return blob, False
@@ -304,7 +304,7 @@ def verify(apk_path, new_url):
 
 # ------------------------------------------------------------------ main
 def main():
-    ap = argparse.ArgumentParser(description="Parchea Dota 2 Mobile para usar tu servidor local.")
+    ap = argparse.ArgumentParser(description="Parchea MOBA2 para usar tu servidor local.")
     ap.add_argument("--apk", required=True, help="APK original (sin parchear)")
     ap.add_argument("--ip", required=True, help="IP del servidor, p.ej. 192.168.1.105")
     ap.add_argument("--port", type=int, default=8080, help="puerto HTTP (0 = omitir, servidor en :80)")
@@ -315,7 +315,7 @@ def main():
                     help="permite HTTP en claro (parchea libunity.so: insecureHttpOption=AlwaysAllowed)")
     ap.add_argument("--es", default=None, metavar="ES_JSON",
                     help="paquete de idioma español (p.ej. lang/es.json)")
-    ap.add_argument("--work", default="build_dota2m", help="directorio de trabajo")
+    ap.add_argument("--work", default="build_moba2", help="directorio de trabajo")
     ap.add_argument("--out", default="dist", help="directorio de salida")
     ap.add_argument("--keep", action="store_true", help="conservar el árbol decodificado")
     a = ap.parse_args()
@@ -363,13 +363,13 @@ def main():
         if not os.path.isfile(a.es):
             sys.exit(f"ERROR: no existe el paquete de idioma {a.es}")
         sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-        from dota2m.tools.es_pack import apply_all
+        from moba2.tools.es_pack import apply_all
         log(f"aplicando paquete de idioma: {a.es}")
         apply_all(decoded, a.es)
 
     if a.allow_http:
         sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-        from dota2m.tools.libunity_patch import patch as patch_libunity
+        from moba2.tools.libunity_patch import patch as patch_libunity
         log("permitiendo HTTP en claro en libunity.so")
         for abi in sorted(os.listdir(os.path.join(decoded, "lib"))):
             so = os.path.join(decoded, "lib", abi, "libunity.so")
@@ -388,7 +388,7 @@ def main():
     patch_manifest(os.path.join(decoded, MANIFEST))
 
     # 4) reconstruir
-    unsigned = os.path.join(a.work, "dota2m-unsigned.apk")
+    unsigned = os.path.join(a.work, "moba2-unsigned.apk")
     log("reconstruyendo con apktool")
     run(java_cmd(a.apktool, "b", "-f", "-o", unsigned, decoded))
 
@@ -406,7 +406,7 @@ def main():
             produced = os.path.join(a.out, sorted(cands)[-1])
         else:
             log("firmando con apksigner del PATH")
-            produced = os.path.join(a.out, "dota2m-patched-signed.apk")
+            produced = os.path.join(a.out, "moba2-patched-signed.apk")
             run(["apksigner", "sign", "--out", produced, unsigned])
 
     final = os.path.join(a.out, f"dota2mobile-patched-{a.ip.replace('.', '_')}"
