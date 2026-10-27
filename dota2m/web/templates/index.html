@@ -1,0 +1,18 @@
+<h1>Clasificación</h1>
+<section class="cards">
+  <div class="card"><b>{{players}}</b><span>jugadores</span></div>
+  <div class="card"><b>{{match_count}}</b><span>partidas</span></div>
+  <div class="card"><b>{{hours}}</b><span>horas jugadas</span></div>
+  <div class="card"><b>{{lobbies}}</b><span>salas activas</span></div>
+</section>
+
+<table>
+  <thead><tr><th>#</th><th>Jugador</th><th>MMR</th><th>Rango</th><th>PJ</th><th>Victorias</th><th>Winrate</th></tr></thead>
+  <tbody>{{rows|raw}}</tbody>
+</table>
+
+<h2>Últimas partidas</h2>
+<table>
+  <thead><tr><th>Fecha</th><th>Partida</th><th>Modo</th><th>Duración</th><th>Ganador</th></tr></thead>
+  <tbody>{{recent|raw}}</tbody>
+</table>

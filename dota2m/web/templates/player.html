@@ -1,0 +1,19 @@
+<h1>{{name}} <small>{{tier}} · {{rating}} MMR</small></h1>
+<section class="cards">
+  <div class="card"><b>{{games}}</b><span>partidas</span></div>
+  <div class="card"><b>{{wins}}</b><span>victorias</span></div>
+  <div class="card"><b>{{winrate}}</b><span>winrate</span></div>
+  <div class="card"><b>{{kda}}</b><span>K/D/A medio</span></div>
+</section>
+
+<h2>Por héroe</h2>
+<table>
+  <thead><tr><th>Héroe</th><th>PJ</th><th>Victorias</th><th>Winrate</th><th>K/D/A</th><th>Δ MMR</th></tr></thead>
+  <tbody>{{heroes|raw}}</tbody>
+</table>
+
+<h2>Historial reciente</h2>
+<table>
+  <thead><tr><th>Fecha</th><th>Partida</th><th>Héroe</th><th>Resultado</th><th>K/D/A</th><th>Δ MMR</th></tr></thead>
+  <tbody>{{matches|raw}}</tbody>
+</table>

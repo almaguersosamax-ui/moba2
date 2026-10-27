@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+data/
+*.db
+*.db-wal
+*.db-shm
+build_dota2m/
+dist/
+logs/
+*.apk
+*.idsig
+vendor/
+tls/local.key
