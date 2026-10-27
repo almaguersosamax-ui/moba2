@@ -2,7 +2,7 @@
 """Diagnóstico de la cadena teléfono → PC → servidor.
 
     python doctor.py                          # usa http://192.168.1.105:8080
-    python doctor.py --url http://192.168.1.105:8080 --apk dist\\dota2mobile-patched-....apk
+    python doctor.py --url http://192.168.1.105:8080 --apk dist\\moba2-patched-....apk
 
 Comprueba, en orden:
   1. IPs de este PC (para detectar si parcheaste con una IP equivocada)

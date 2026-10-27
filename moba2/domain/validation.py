@@ -7,7 +7,7 @@ import re
 NAME_MIN = 3
 NAME_MAX = 24
 _NAME_RE = re.compile(r"^[\w \-.\[\]]{%d,%d}$" % (NAME_MIN, NAME_MAX), re.UNICODE)
-_RESERVED = {"admin", "administrador", "root", "system", "server", "apkvision", "valve", "dota", "anónimo"}
+_RESERVED = {"admin", "administrador", "root", "system", "server", "apkvision", "valve", "anónimo"}
 
 
 class ValidationError(ValueError):

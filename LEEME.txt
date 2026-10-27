@@ -16,11 +16,11 @@ ARRANQUE RAPIDO
      Panel:         http://192.168.1.105:8080/
      (opcional)     python3 seed_demo.py --url http://127.0.0.1:8080
   2) Parche de la APK (sobre la APK ORIGINAL, sin parchear):
-     python3 patch_moba2.py --apk Dota-2-Mobile-v1.1-APKVISION.apk --ip 192.168.1.105
-     -> dist/dota2mobile-patched-192_168_1_105-p8080.apk
+     python3 patch_moba2.py --apk moba-fan-make-v1.1.apk --ip 192.168.1.105
+     -> dist/moba2-patched-192_168_1_105-p8080.apk
   3) Instalar:
-     adb uninstall com.temka.dota2mobile
-     adb install -r dist/dota2mobile-patched-192_168_1_105-p8080.apk
+     adb uninstall <paquete>   # ver dist/INSTALAR.txt
+     adb install -r dist/moba2-patched-192_168_1_105-p8080.apk
 
 SI CAMBIA LA IP DEL SERVIDOR
   Vuelve a ejecutar el paso 2 con --ip NUEVA_IP (siempre sobre la APK original) e instala el nuevo APK.
@@ -29,7 +29,7 @@ LO QUE NECESITAS TENER
   - Python 3.9+            (sin pip install: todo es libreria estandar)
   - Java 8+ (JRE)          para apktool y el firmador
   - Las 2 herramientas ya estan en vendor/ (apktool.jar, uber-apk-signer.jar)
-  - La APK original Dota-2-Mobile-v1.1-APKVISION.apk
+  - La APK original moba-fan-make-v1.1.apk
   - adb (Opcional)         para instalar y ver logcat
 
 LIMITE IMPORTANTE

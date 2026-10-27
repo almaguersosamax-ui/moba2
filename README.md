@@ -1,13 +1,13 @@
 > **MOBA2** es el nombre del proyecto (servidor + parches). La aplicación que se analiza y
-> parchea es el fan-port **Dota 2 Mobile** (`com.temka.dota2mobile` v1.1, distribuida por
-> APKVISION). Los identificadores técnicos de la app —paquete, claves `dota.net.*`,
-> `dota.online.*`, textos `DOTA_*` y ficheros `*_english.json`— se conservan tal cual porque
+> parchea es el fan-port **MOBA2** (`<paquete de la app>` v1.1, distribuida por
+> APKVISION). Los identificadores técnicos de la app —paquete, claves `net.*`,
+> `online.*`, textos `CLAVE_*` y ficheros `*_english.json`— se conservan tal cual porque
 > son parte del binario original.
 
 # MOBA2 — servidor propio + parches para «MOBA2» (fan port)
 
 Servidor LAN con estadísticas (MMR, héroes, historial) y sistema de parcheo de la APK
-`com.temka.dota2mobile` v1.1 para apuntarla a tu propio backend.
+`<paquete de la app>` v1.1 para apuntarla a tu propio backend.
 
 ## Descargas
 
@@ -33,7 +33,7 @@ Panel: `http://IP:8080/` · API: `/v1/*` (compatible con `OnlineService` del cli
 ## Parchear la APK
 
 ```bash
-python patch_moba2.py --apk Dota-2-Mobile-v1.1-APKVISION.apk --ip 192.168.1.105 \
+python patch_moba2.py --apk moba-fan-make-v1.1.apk --ip 192.168.1.105 \
   --apktool apktool.jar --signer uber-apk-signer.jar --es lang/es.json --allow-http
 ```
 
@@ -45,7 +45,7 @@ python patch_moba2.py --apk Dota-2-Mobile-v1.1-APKVISION.apk --ip 192.168.1.105 
 ## Diagnóstico
 
 ```bash
-python doctor.py --url http://192.168.1.105:8080 --apk dist/dota2mobile-patched-*.apk
+python doctor.py --url http://192.168.1.105:8080 --apk dist/moba2-patched-*.apk
 ```
 Comprueba IPs locales, servidor, puerto, contenido de la APK y el parche de `libunity.so`.
 

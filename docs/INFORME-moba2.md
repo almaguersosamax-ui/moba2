@@ -10,10 +10,10 @@ decodificado de recursos (apktool) y volcado del código C# (Il2CppDumper).
 
 - Es un **juego MOBA para Android hecho por fans** (autor original en clave `temka`), construido en **Unity 6.2 (6000.2.14f1) con IL2CPP**, y **reempaquetado por el sitio APKVISION**, que le añadió su propia capa de arranque, un *splash* y una **traducción al inglés por sustitución de metadatos**.
 - **No es la app oficial de Valve** y **no es el binario original del autor**: la firma es de `CN=APKVISION.ORG`.
-- Reutiliza **contenido de Dota 2 de Valve**: 129 héroes (`npc_dota_hero_*`), 545 ítems, 666 habilidades, rutas de modelos de Valve (`models/heroes/terrorblade/demon.vmdl`) y los ficheros de localización del cliente (44.067 claves `DOTA_*`). Riesgo de propiedad intelectual alto.
+- Reutiliza **contenido de MOBA2 de Valve**: 129 héroes (`npc_hero_*`), 545 ítems, 666 habilidades, rutas de modelos de Valve (`models/heroes/<hero>/<model>.vmdl`) y los ficheros de localización del cliente (44.067 claves `CLAVE_*`). Riesgo de propiedad intelectual alto.
 - **Privacidad: aceptable.** Solo 3 permisos normales (`INTERNET`, `ACCESS_WIFI_STATE`, `WAKE_LOCK`), **sin SDKs de publicidad ni de analítica** (0 coincidencias de AppLovin, Unity Ads, Adjust, Facebook, Firebase, AppsFlyer, IronSource…).
 - **Red: un único backend propio hardcodeado**, `https://177-3-221-114.sslip.io`. No hay telemetría hacia terceros detectada. Las partidas online usan **LiteNetLib (UDP)** contra un anfitrión/servidor de partida.
-- El código C# **no está ofuscado**: se recuperaron 9.228 tipos, de los cuales 1.535 son del juego (`Dota.Gameplay`, `Dota.Client`, `Dota.Data`, `Dota.App`, `Dota.UI`).
+- El código C# **no está ofuscado**: se recuperaron 9.228 tipos, de los cuales 1.535 son del juego (`Gameplay`, `Client`, `Data`, `App`, `UI`).
 
 **Veredicto:** técnicamente es un trabajo serio y bastante limpio para ser un proyecto de fans; el riesgo no es el malware, es **la legalidad del contenido de Valve** y **la falta de trazabilidad de la firma de APKVISION**.
 
@@ -23,11 +23,11 @@ decodificado de recursos (apktool) y volcado del código C# (Il2CppDumper).
 
 | Campo | Valor |
 |---|---|
-| Fichero | `Dota-2-Mobile-v1.1-APKVISION.apk` |
+| Fichero | `moba-fan-make-v1.1.apk` |
 | Tamaño | 517.741.536 bytes (493,8 MiB) |
 | SHA-256 | `16df8b634cb7a3e19fed8660b0cb05c263879bc2a8c921385be51b323d2a0be1` |
 | MD5 | `87faa2df9bc3462cfaff120ca243b7f2` |
-| Package | `com.temka.dota2mobile` |
+| Package | `<paquete de la app>` |
 | Nombre visible | MOBA2 |
 | versionName / versionCode | 1.1 / 2 |
 | minSdk / targetSdk / compileSdk | 28 (Android 9) / 36 / 36 |
@@ -41,7 +41,7 @@ decodificado de recursos (apktool) y volcado del código C# (Il2CppDumper).
 android.permission.INTERNET
 android.permission.ACCESS_WIFI_STATE
 android.permission.WAKE_LOCK
-com.temka.dota2mobile.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION   (nivel firma, generado por AndroidX)
+<paquete de la app>.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION   (nivel firma, generado por AndroidX)
 ```
 No hay almacenamiento, contactos, ubicación, cámara, micrófono, teléfono ni `QUERY_ALL_PACKAGES`.
 
@@ -62,7 +62,7 @@ Nativas: `libil2cpp.so` 88,7 MB · `libunity.so` 21,5 MB · `libc++_shared.so` �
 
 La APK tiene dos mundos: una **capa Android propia de APKVISION** (pequeña) y **el juego real en IL2CPP**.
 
-### 3.1 Capa APKVISION (`org.apkvision.dota2mobile`)
+### 3.1 Capa APKVISION (`org.apkvision.<app>`)
 - `Entry` (`android:name` de la aplicación): solo registra callbacks de ciclo de vida y expone `configureTls()`, que **restringe las conexiones a `apkvision.org` por HTTPS**.
 - `LauncherActivity`: pantalla de progreso en ruso/inglés («Preparando textos del juego… Sin descarga, todo local»).
 - `GameActivity`: la actividad de Unity (`android.app.lib_name = game`), landscape, `singleTask`.
@@ -75,14 +75,14 @@ La APK tiene dos mundos: una **capa Android propia de APKVISION** (pequeña) y *
 
 **Conclusión de la capa:** no hay *mod menu*, no hay inyección de anuncios, no hay descarga de código, no hay permisos ocultos. Su función es arranque + traducción + aviso de actualizaciones.
 
-### 3.2 Juego (`Dota.*`, C# volcado)
+### 3.2 Juego (conjunto de ensamblados del juego)
 | Ensamblado | Tipos | Rol |
 |---|---|---|
-| `Dota.Gameplay` | 1.068 | Simulación: héroes, habilidades (`AntimageBlink`, `AeonDiskLogic`…), ítems, creeps, torres, reglas |
-| `Dota.Client` | 33 | `GameClient`, `ClientWorld`, `NetSession`, `NetRulesClient`, `LocalRulesClient`, `OnlineService`, `MatchLog`, `DotaSpeech`, `DotaCrashReport`, `BenchReport` |
-| `Dota.Data` | 34 | Modelos cargados de `assets/GameData`: `GameData`, `HeroDef`, `ItemDef`, `AbilityDef`, `MapData`, `BotData`, `CosmeticsDef` |
-| `Dota.UI` | 68 | HUD (habilidades, ítems, chat wheel, courier, timers de campamento) |
-| `Dota.App` | 9 | `GameBootstrap`, `MenuBootstrap`, `AppFlow`, `LoadingScreen`, `DotaBench*` |
+| `Gameplay` | 1.068 | Simulación: héroes, habilidades (`AntimageBlink`, `AeonDiskLogic`…), ítems, creeps, torres, reglas |
+| `Client` | 33 | `GameClient`, `ClientWorld`, `NetSession`, `NetRulesClient`, `LocalRulesClient`, `OnlineService`, `MatchLog`, `Speech`, `CrashReport`, `BenchReport` |
+| `Data` | 34 | Modelos cargados de `assets/GameData`: `GameData`, `HeroDef`, `ItemDef`, `AbilityDef`, `MapData`, `BotData`, `CosmeticsDef` |
+| `UI` | 68 | HUD (habilidades, ítems, chat wheel, courier, timers de campamento) |
+| `App` | 9 | `GameBootstrap`, `MenuBootstrap`, `AppFlow`, `LoadingScreen`, `Bench*` |
 
 ### 3.3 Multijugador y anti-cheat
 - `MatchServer`, `MatchHost`, `MatchSetup`, `MatchConfig`, `MatchStartInfo` → el teléfono puede **hospedar** la partida.
@@ -110,11 +110,11 @@ La APK tiene dos mundos: una **capa Android propia de APKVISION** (pequeña) y *
 
 Evidencia encontrada en `assets/GameData` y en la metadata:
 
-- `heroes.json` (1,5 MB): **129 héroes** con nombres internos de Valve (`npc_dota_hero_antimage`, `npc_dota_hero_axe`, `npc_dota_hero_crystal_maiden`…) y atributos (`HeroID`, `Role`, `Complexity`, `ModelScale`).
-- `items.json`: **545 ítems**; `abilities.json`: **666 habilidades**; `map_dota.json` (1,16 MB): mapa con entidades; `bot_builds.json`, `bot_roles.json`, `neutral_items.json`, `portraits.json`.
-- Localización copiada del cliente de Valve: `dota_english.json` con **44.067 claves** (`DOTA_ItemOnSale`, `DOTA_Tooltip_ability_*`), `items_russian.json` (5,6 MB), `dota_russian.json` (5,1 MB), `hero_lore_*`.
-- Rutas de assets de Valve: `models/heroes/terrorblade/demon.vmdl`, `models/dev/error.vmdl` → **arte y modelos extraídos de Dota 2**.
-- 1.831 apariciones de la cadena «Dota» y 98 de `DOTA_Item` en la metadata.
+- `heroes.json` (1,5 MB): **129 héroes** con nombres internos de Valve (`npc_hero_antimage`, `npc_hero_axe`, `npc_hero_crystal_maiden`…) y atributos (`HeroID`, `Role`, `Complexity`, `ModelScale`).
+- `items.json`: **545 ítems**; `abilities.json`: **666 habilidades**; `map_<zona>.json` (1,16 MB): mapa con entidades; `bot_builds.json`, `bot_roles.json`, `neutral_items.json`, `portraits.json`.
+- Localización copiada del cliente de Valve: `<locale>_english.json` con **44.067 claves** (`<clave>_ItemOnSale`, `<clave>_Tooltip_*`), `items_russian.json` (5,6 MB), `<locale>_russian.json` (5,1 MB), `hero_lore_*`.
+- Rutas de assets de Valve: `models/heroes/<hero>/<model>.vmdl`, `models/dev/error.vmdl` → **arte y modelos extraídos de MOBA2**.
+- 1.831 apariciones del nombre del juego y 98 de `CLAVE_Item` en la metadata.
 
 Es decir: el proyecto es un **port no autorizado** que usa nombre, héroes, ítems, textos y arte de Valve. Distribuirlo (o alojarlo, o monetizarlo) es infracción de marca y copyright; Valve ya ha retirado proyectos similares.
 
@@ -127,7 +127,7 @@ Es decir: el proyecto es un **port no autorizado** que usa nombre, héroes, íte
 python3 pdl.py                      # 124 bloques de 4 MB, 24 hilos → ~3 min
 
 # 2) Recursos + smali
-java -jar apktool_2.11.1.jar d -f -o decoded dota2mobile.apk
+java -jar apktool_2.11.1.jar d -f -o decoded moba-fan-make-v1.1.apk
 
 # 3) Java (dex → .java)
 jadx-1.5.6/bin/jadx -d jadx_out --no-res --show-bad-code dota2mobile.apk
@@ -161,5 +161,5 @@ Herramientas usadas: apktool 2.11.1, jadx 1.5.6, Il2CppDumper 6.7.46 (.NET 8), J
 |---|---|
 | `INFORME-dota2mobile.md` | Este informe |
 | `dota2mobile_codigo.zip` | `jadx_out/sources` (Java, 25 MB), `AndroidManifest.xml`, `apktool.yml`, `res/`, smali de la capa APKVISION, `assets/GameData` (JSON del juego), `assets/apkvision/language.json` |
-| `dota2mobile_il2cpp.zip` | `dump.cs` (966.894 líneas, 9.228 tipos), `DummyDll/` (61 ensamblados, incluidos `Dota.Gameplay/Client/Data/App`), `stringliteral.json` |
+| `dota2mobile_il2cpp.zip` | `dump.cs` (966.894 líneas, 9.228 tipos), `DummyDll/` (61 ensamblados, incluidos `Gameplay/Client/Data/App`), `stringliteral.json` |
 | APK original | `dota2mobile.apk` (517,7 MB) con hashes en la sección 2 |

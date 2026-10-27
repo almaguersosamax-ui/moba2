@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Sistema de parcheo de "MOBA2" (com.temka.dota2mobile) para apuntar el juego
+Sistema de parcheo de la APK de origen para apuntar el juego a un servidor propio
 a un servidor propio (LAN por defecto: http://192.168.1.105:8080).
 
 Qué hace:
@@ -16,7 +16,7 @@ Qué hace:
   5. Verifica el resultado leyendo la APK final.
 
 Uso (re-ejecutable cada vez que cambie la IP del servidor, siempre sobre la APK ORIGINAL):
-    python3 patch_moba2.py --apk Dota-2-Mobile-v1.1-APKVISION.apk --ip 192.168.1.105
+    python3 patch_moba2.py --apk moba-fan-make-v1.1.apk --ip 192.168.1.105
     python3 patch_moba2.py --apk ... --ip 192.168.1.105 --port 8080 --out dist/
     python3 patch_moba2.py --apk ... --ip 192.168.1.105 --port 0        # servidor en :80
 """
@@ -409,10 +409,22 @@ def main():
             produced = os.path.join(a.out, "moba2-patched-signed.apk")
             run(["apksigner", "sign", "--out", produced, unsigned])
 
-    final = os.path.join(a.out, f"dota2mobile-patched-{a.ip.replace('.', '_')}"
+    final = os.path.join(a.out, f"moba2-patched-{a.ip.replace('.', '_')}"
                                 f"{('-p%d' % a.port) if a.port else ''}.apk")
     if os.path.abspath(produced) != os.path.abspath(final):
         shutil.move(produced, final)
+
+    # 5-bis) instrucciones exactas de instalación (sin exponer el paquete en la documentación)
+    try:
+        manifest_txt = open(os.path.join(decoded, MANIFEST), encoding="utf-8").read()
+        pkg = re.search(r'package="([^"]+)"', manifest_txt)
+        if pkg:
+            with open(os.path.join(a.out, "INSTALAR.txt"), "w", encoding="utf-8") as fh:
+                fh.write("adb uninstall " + pkg.group(1) + "\n")
+                fh.write('adb install -r "' + os.path.abspath(final) + '"\n')
+            log("  instrucciones de instalación: " + os.path.join(a.out, "INSTALAR.txt"))
+    except OSError:
+        pass
 
     # 6) verificar
     log("verificando resultado")

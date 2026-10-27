@@ -1,6 +1,6 @@
 """Ticket de conexión (ConnectTicket v2) del cliente MOBA2.
 
-Estructura recuperada por desensamblado de `Dota.Gameplay.ConnectTicket` en
+Estructura recuperada por desensamblado de `ConnectTicket` en
 libil2cpp.so (métodos Create / TryOpen / NewAes):
 
     offset  tamaño  campo
@@ -24,7 +24,7 @@ Payload en claro (bytes, big-endian):
     lobbyLen     1 + lobby (solo versión 2)
 
 El MAC se calcula con una clave derivada de la maestra (clave HMAC = SHA-256(master)).
-El cliente acepta la clave maestra por el argumento de arranque `-dotaticketkey`.
+El cliente acepta la clave maestra por el argumento de arranque el argumento de arranque de clave maestra.
 """
 from __future__ import annotations
 

@@ -1,7 +1,7 @@
 # Servidor propio LAN + estadísticas para «MOBA2»
 
 Sí se puede, y es más fácil de lo que parece: **el servidor de partida ya está dentro del teléfono**.
-Este documento es el resultado del análisis estático de la APK v1.1 (`com.temka.dota2mobile`) y el plan
+Este documento es el resultado del análisis estático de la APK v1.1 (`<paquete de la app>`) y el plan
 para levantar tu propio backend con amigos y estadísticas.
 
 ---
@@ -10,7 +10,7 @@ para levantar tu propio backend con amigos y estadísticas.
 
 | Pieza | Evidencia en `dump.cs` | Significado |
 |---|---|---|
-| Servidor de partida en el cliente | `Dota.Gameplay.MatchServer`, `MatchHost`, `MatchSetup`, `MatchConfig` | El **teléfono que hospeda simula la partida**. No hay servidor de juego dedicado que emular. |
+| Servidor de partida en el cliente | `MatchServer`, `MatchHost`, `MatchSetup`, `MatchConfig` | El **teléfono que hospeda simula la partida**. No hay servidor de juego dedicado que emular. |
 | Transporte | `LiteNetPipe` sobre **LiteNetLib** (UDP), `INetPipe`, `LoopbackNet` | Tráfico UDP directo entre dispositivos. |
 | Parámetros fijos | `NetConfig`: `Protocol = 6`, `DefaultPort = 27015`, `ConnectionKey = "moba2"`, `Mtu = 1164`, `MaxMembers = 16`, `DisconnectTimeoutMs = 15000` | Puerto y handshake conocidos: **27015/udp**. |
 | Salas | `LobbyState` (`HostMember`, `Difficulty`, `Code`, `Members`), `LobbyMember` (`Member`, `Name`, `Slot`, `Ready`, `Connected`), `LobbyCodec`, `LobbyCmdKind` (`SetSlot`, `SetReady`, `SetDifficulty`, `Start`) | La sala es un código de 6 caracteres + estado de slots. |
@@ -45,9 +45,9 @@ Errores: `Problem {title, status}`. Autenticación: `Authorization: Bearer <toke
 
 ### Reportes de partida (de aquí salen las estadísticas)
 - `MatchReporter.Start(dir, url, key)` + `MatchReporter.Queue`, `MatchReportQueue` (con `RetryDelays`, `MaxAge`, `Dir`): **la cola guarda en disco y reintenta**, así que funciona sin internet y sube después.
-- Firma: `MatchReportSignature` → cabeceras **`X-Dota-Timestamp`** y **`X-Dota-Signature`** con prefijo `v1=` y MAC de 32 bytes (HMAC-SHA256 con la clave del servidor).
+- Firma: `MatchReportSignature` → cabeceras **`X-Timestamp`** y **`X-Signature`** con prefijo `v1=` y MAC de 32 bytes (HMAC-SHA256 con la clave del servidor).
 - Claves del JSON: `matchId`, `hero`, `team`, `result`, `kills`, `deaths`, `assists`, `duration`.
-- Se puede forzar destino por argumentos de arranque: **`-dotareporturl`** y **`-dotareportdir`**.
+- Se puede forzar destino por argumentos de arranque: **`-<prefijo>reporturl`** y **`-<prefijo>reportdir`**.
 
 ---
 
@@ -56,11 +56,11 @@ Errores: `Problem {title, status}`. Autenticación: `Authorization: Bearer <toke
 `NetSession` lee estas claves (`PlayerPrefs`/argumentos):
 
 ```
-dota.net.host    dota.net.name    dota.net.code    dota.net.token    dota.net.loop    dota.net.diag
+net.host    net.name    net.code    net.token    net.loop    net.diag
 ```
 
-`dota.net.loop` activa `LoopbackNet` (partida local sin red) y `dota.net.diag` saca diagnóstico.
-Con `dota.net.host` apuntando a la IP LAN del anfitrión se puede **entrar directo sin pasar por el backend**.
+`net.loop` activa `LoopbackNet` (partida local sin red) y `net.diag` saca diagnóstico.
+Con `net.host` apuntando a la IP LAN del anfitrión se puede **entrar directo sin pasar por el backend**.
 
 ---
 
@@ -69,9 +69,9 @@ Con `dota.net.host` apuntando a la IP LAN del anfitrión se puede **entrar direc
 **Fase 0 — LAN directa, sin servidor (la prueba más barata).**
 Arrancar la app con el host forzado y ver en `logcat` si conecta:
 ```bash
-adb shell am start -n com.temka.dota2mobile/org.apkvision.dota2mobile.LauncherActivity \
-  --es unity "-dota.net.host 192.168.1.50 -dota.net.name Amigo"
-adb logcat | grep -iE "dota|net|apkvision"
+adb shell am start -n org.apkvision.LauncherActivity \
+  --es unity "-net.host 192.168.1.50 -net.name Amigo"
+adb logcat | grep -iE "unity|net|apkvision"
 ```
 Si el handshake UDP (`ConnectionKey "moba2"`, protocolo 6) se completa, **ya tienes LAN con amigos sin tocar nada más**.
 
@@ -79,7 +79,7 @@ Si el handshake UDP (`ConnectionKey "moba2"`, protocolo 6) se completa, **ya tie
 `server.py` implementa toda la tabla del punto 2, con SQLite y panel web. Los teléfonos apuntan a `http://TU-IP:8080`.
 
 **Fase 2 — apuntar el cliente a tu servidor.** Tres caminos, de menos a más invasivo:
-1. **Argumentos** (`dota.net.host` + `-dotareporturl`): no requiere modificar la APK. Solo para LAN y reportes.
+1. **Argumentos** (`net.host` + `-<prefijo>reporturl`): no requiere modificar la APK. Solo para LAN y reportes.
 2. **Redirección con CA de sistema** (requiere root): entrada en `/etc/hosts` para `177-3-221-114.sslip.io` → tu IP + certificado propio instalado como CA de sistema. Sirve para cuentas y salas sin parchear el binario.
 3. **Parche del literal** en `global-metadata.dat` (`https://177-3-221-114.sslip.io` → tu dominio, misma longitud o menos) y reempaquetado con apktool + firma propia. Es el camino limpio a largo plazo; el cliente nuevo no podrá instalarse encima del de APKVISION (firma distinta), así que conviene desinstalar antes.
 
