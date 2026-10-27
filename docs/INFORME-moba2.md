@@ -130,7 +130,7 @@ python3 pdl.py                      # 124 bloques de 4 MB, 24 hilos → ~3 min
 java -jar apktool_2.11.1.jar d -f -o decoded moba-fan-make-v1.1.apk
 
 # 3) Java (dex → .java)
-jadx-1.5.6/bin/jadx -d jadx_out --no-res --show-bad-code dota2mobile.apk
+jadx-1.5.6/bin/jadx -d jadx_out --no-res --show-bad-code moba-fan-make-v1.1.apk
 
 # 4) C# (IL2CPP → dump.cs + DummyDll)
 dotnet Il2CppDumper.dll \
@@ -159,7 +159,7 @@ Herramientas usadas: apktool 2.11.1, jadx 1.5.6, Il2CppDumper 6.7.46 (.NET 8), J
 
 | Fichero | Contenido |
 |---|---|
-| `INFORME-dota2mobile.md` | Este informe |
-| `dota2mobile_codigo.zip` | `jadx_out/sources` (Java, 25 MB), `AndroidManifest.xml`, `apktool.yml`, `res/`, smali de la capa APKVISION, `assets/GameData` (JSON del juego), `assets/apkvision/language.json` |
-| `dota2mobile_il2cpp.zip` | `dump.cs` (966.894 líneas, 9.228 tipos), `DummyDll/` (61 ensamblados, incluidos `Gameplay/Client/Data/App`), `stringliteral.json` |
-| APK original | `dota2mobile.apk` (517,7 MB) con hashes en la sección 2 |
+| `INFORME-moba2.md` | Este informe |
+| `moba2_codigo.zip` | `jadx_out/sources` (Java, 25 MB), `AndroidManifest.xml`, `apktool.yml`, `res/`, smali de la capa APKVISION, `assets/GameData` (JSON del juego), `assets/apkvision/language.json` |
+| `moba2_il2cpp.zip` | `dump.cs` (966.894 líneas, 9.228 tipos), `DummyDll/` (61 ensamblados, incluidos `Gameplay/Client/Data/App`), `stringliteral.json` |
+| APK original | `moba-fan-make-v1.1.apk` (517,7 MB) con hashes en la sección 2 |
